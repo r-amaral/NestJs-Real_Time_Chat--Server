@@ -20,6 +20,7 @@ export class AppGateway
 
   private logger = new Logger(AppGateway.name);
 
+  private messages = new Set();
   private connectedUsers: Set<string> = new Set<string>();
   private notifiedUsers: Set<string> = new Set<string>();
 
@@ -54,12 +55,34 @@ export class AppGateway
     });
   }
 
+  @SubscribeMessage("msgToServer")
+  handleMessageRoom(_: Socket, payload): void {
+    this.server.emit("msgToServer", payload);
+  }
+
   @SubscribeMessage("msgToClient")
   handleMessageChat(_: Socket, payload): void {
+    this.messages.add(payload);
     this.server.emit("msgToClient", payload);
+
     this.logger.log(
       `\n mensagem "${payload.message}" \n Recebida de "${payload.author}" \n no horário "${payload.time}"`
     );
+  }
+
+  @SubscribeMessage("deleteMessage")
+  handleDeleteMessage(client: Socket, messageId: string) {
+    if (messageId) {
+      const messageToArray = [...this.messages];
+
+      messageToArray.forEach((message: any) => {
+        if (message.id === messageId) {
+          this.messages.delete(message);
+          this.logger.log(`mensagem deletada \n${JSON.stringify(message)}"`);
+        }
+      });
+      client.emit("messageDeleted", [...this.messages]);
+    }
   }
 
   @SubscribeMessage("joined-room")
