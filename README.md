@@ -26,36 +26,32 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Yarn Installation
+
+It is recommended to install Yarn through the npm package manager, which comes bundled with Node.js when you install it on your system.
+Once you have npm installed you can run the following both to install and upgrade Yarn:
+
+```bash
+$ npm install --global yarn
+```
+
 ## Installation
 
 ```bash
-$ pnpm install
+$ yarn install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ pnpm run start
+$ yarn start
 
 # watch mode
-$ pnpm run start:dev
+$ yarn start:dev
 
 # production mode
-$ pnpm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+$ yarn start:prod
 ```
 
 ## Support
